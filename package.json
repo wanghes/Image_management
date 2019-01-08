@@ -1,0 +1,31 @@
+{
+  "name": "image_management",
+  "version": "1.0.0",
+  "description": "file_upload",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wanghes/Image_management.git"
+  },
+  "keywords": [
+    "image",
+    "upload"
+  ],
+  "author": "wang_hes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wanghes/Image_management/issues"
+  },
+  "homepage": "https://github.com/wanghes/Image_management#readme",
+  "dependencies": {
+    "koa": "^2.6.2",
+    "koa-body": "^4.0.6",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "mysql2": "^1.6.4",
+    "sequelize": "^4.42.0"
+  }
+}
