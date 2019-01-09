@@ -22,8 +22,15 @@ exports.list = function(host) {
     /* container */
     #container{width:1260px; margin:0 auto;}
     #container ul{ width:300px;list-style:none;float:left;margin-right:20px;}
-    #container ul li{margin-bottom:20px;}
-    #container ul li img{width:300px;}
+    #container ul li{
+        margin-bottom:20px;
+        box-sizing: border-box;
+        padding: 5px;
+        border: 1px solid #efefef;
+        box-shadow: 0 3px 3px rgba(0,0,0,.2);
+        text-align:center;
+    }
+    #container ul li img{width:288px;}
     </style>
   </head>
   <body>
@@ -78,7 +85,7 @@ exports.list = function(host) {
                     for(var i=0;i<rows.length;i++){//每次加载时模拟随机加载图片
                         let val = rows[i];
                         let html = "";
-                        html = '<li><img src = "' + val.path + '"><p><input style="width:100%" type="text" value="${host}' + val.path + '" /><input style="width:20%" type="button" class="copy_url_one" value="复制"></p></li>';
+                        html = '<li><img src = "' + val.path + '"><p><input style="width:94%" type="text" value="${host}' + val.path + '" /><input style="width:20%" type="button" class="copy_url_one" value="复制"></p></li>';
                         $minUl = getMinUl();
                         $minUl.append(html);
                     }
