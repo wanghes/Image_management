@@ -1,6 +1,6 @@
 'use strict';
 
-exports.layout = function(content, data) {
+exports.layout = function(url) {
     return `
   <!DOCTYPE html>
   <html>
@@ -14,7 +14,7 @@ exports.layout = function(content, data) {
   </head>
   <body>
     <div id="root">
-        <form action="http://localhost:3000/uploadfile" method="post" enctype="multipart/form-data">
+        <form action="http://img.mousecloud.cn/uploadfile" method="post" enctype="multipart/form-data">
             <input type="file" name="file" id="file" value="" onchange="changeImg()" multiple="multiple" />
             <input type="submit" value="提交"/>
         </form>

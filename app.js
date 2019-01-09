@@ -78,12 +78,11 @@ router.post('/uploadfiles', async (ctx, next) => {
 
 
 router.get('/', (ctx, next) => {
-    ctx.body = layout();
+    ctx.body = layout(ctx.request.origin+'/uploadfile');
 });
 
 
 router.get('/domain', (ctx, next) => {
-    console.log(ctx.request.origin);
     ctx.body = ctx.request.origin;
 });
 
@@ -91,4 +90,4 @@ app
     .use(router.routes())
     .use(router.allowedMethods());
 
-app.listen(3000);
+app.listen(3003);
