@@ -14,7 +14,7 @@ exports.layout = function(url) {
   </head>
   <body>
     <div id="root">
-        <form action="http://img.mousecloud.cn/uploadfile" method="post" enctype="multipart/form-data">
+        <form action="${url}" method="post" enctype="multipart/form-data">
             <input type="file" name="file" id="file" value="" onchange="changeImg()" multiple="multiple" />
             <input type="submit" value="提交"/>
         </form>

@@ -7,6 +7,7 @@ const static = require('koa-static');
 const post = require('./models/post');
 const layout = require('./form.js').layout;
 const list = require('./list.js').list;
+const message = require('./message.js').message;
 
 
 const app = new Koa();
@@ -14,7 +15,14 @@ const app = new Koa();
 const router = new Router();
 
 //设置静态资源的路径
-const staticPath = './'
+const staticPath = './';
+
+
+const sleep = async (duration) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, duration);
+    });
+};
 
 app.use(static(
     path.join(__dirname,  staticPath)
@@ -48,7 +56,10 @@ router.post('/uploadfile', async (ctx, next) => {
     const upStream = fs.createWriteStream(filePath);
     // 可读流通过管道写入可写流
     reader.pipe(upStream);
-    return ctx.body = list("上传成功！\n文件路径" + resultFile);
+
+    return ctx.body = message("上传成功！\n文件路径" + resultFile);
+    // await sleep(2000);
+    // return ctx.redirect('/list');
 });
 
 // 上传多个文件
@@ -80,6 +91,18 @@ router.post('/uploadfiles', async (ctx, next) => {
 router.get('/', (ctx, next) => {
     ctx.body = layout(ctx.request.origin+'/uploadfile');
 });
+
+router.get('/list', (ctx, next) => {
+    ctx.body = list(ctx.request.origin);
+});
+
+router.post('/images', async (ctx, next) => {
+    const page = parseInt(ctx.request.body.page, 10)|| 1;
+    const limit = 10;
+    const offset = limit * (page - 1);
+    const result = await post.findAllPostsByPages(offset, limit);
+    ctx.body= result;
+})
 
 
 router.get('/domain', (ctx, next) => {

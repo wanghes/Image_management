@@ -1,6 +1,6 @@
 'use strict';
 
-exports.list = function(msg) {
+exports.list = function(host) {
     return `
   <!DOCTYPE html>
   <html>
@@ -15,29 +15,98 @@ exports.list = function(msg) {
     *{
         margin:0;
         padding: 0;
+        list-style-type:none;
     }
-    .server_msg {
-        margin: 10px;
-        color: #ffffff;
-        font-size: 12px;
-        line-height: 32px;
-        border: 1px solid #da6060;
-        background: #e67e7e;
-        padding: 5px 10px;
-    }
+    a,img{border:0;}
+    body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
+    /* container */
+    #container{width:1260px; margin:0 auto;}
+    #container ul{ width:300px;list-style:none;float:left;margin-right:20px;}
+    #container ul li{margin-bottom:20px;}
+    #container ul li img{width:300px;}
     </style>
   </head>
   <body>
-    <div id="root">
-        <div class="server_msg">${msg}</div>
-        <div class="list"></div>
-    </div>
+        <div id="container">
+            <ul class="col">
+            <!--
+              <li><img src="/public/img/1.jpg" alt=""/></li>
+              <li><img src="/public/img/2.jpg" alt=""/></li>
+              <li><img src="/public/img/3.jpg" alt=""/></li>
+              -->
+            </ul>
+            <ul class="col"></ul>
+            <ul class="col"></ul>
+            <ul class="col" style="margin-right:0"></ul>
+        </div>
   </body>
+
+  <script type="text/javascript" src="/public/js/jquery.js"></script>
   <script type="text/javascript">
-    setTimeout(function(){
-        var server_msg = document.querySelector('.server_msg');
-        //server_msg.style.display = "none";
-    }, 1500);
+  $(function(){
+        var page = 1;
+        var countAll = 0;
+        var sendStatus = true;
+
+        function copyUrl() {
+            $('body').on('click', '.copy_url_one', function () {
+                var dom = $(this);
+                var url = dom.prev(); //根据实际情况更改,需要复制内容的载体
+                url.select();
+                document.execCommand("Copy");
+                //alert("已复制至剪切板");
+            })
+        }
+
+        copyUrl();
+
+        function loadData() {
+            $.ajax({
+                url: "/images",
+                data:{
+                    page: page++
+                },
+                type: "post",
+                dataType:"json",
+                success:function(data) {
+                    var rows = data.rows;
+                    countAll += data.rows.length;
+                    if (countAll === data.count) {
+                        sendStatus = false;
+                    }
+
+                    for(var i=0;i<rows.length;i++){//每次加载时模拟随机加载图片
+                        let val = rows[i];
+                        let html = "";
+                        html = '<li><img src = "' + val.path + '"><p><input style="width:100%" type="text" value="${host}' + val.path + '" /><input style="width:20%" type="button" class="copy_url_one" value="复制"></p></li>';
+                        $minUl = getMinUl();
+                        $minUl.append(html);
+                    }
+                }
+            });
+        }
+
+        loadData();
+        $(window).on("scroll",function(){
+            $minUl = getMinUl();
+            if($minUl.height() <= $(window).scrollTop()+$(window).height()){
+                //当最短的ul的高度比窗口滚出去的高度+浏览器高度大时加载新图片
+                if (!sendStatus) return;
+                loadData();
+            }
+        })
+        function getMinUl(){ //每次获取最短的ul,将图片放到其后
+            var $arrUl = $("#container .col");
+            var $minUl =$arrUl.eq(0);
+            $arrUl.each(function(index,elem){
+                if($(elem).height()<$minUl.height()){
+                    $minUl = $(elem);
+                }
+            });
+            return $minUl;
+        }
+    });
+
   </script>
   </html>
 `;
