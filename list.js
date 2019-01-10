@@ -82,7 +82,7 @@ exports.list = function(host) {
         function copyUrl() {
             $('body').on('click', '.copy_url_one', function () {
                 var dom = $(this);
-                var url = dom.prev(); //根据实际情况更改,需要复制内容的载体
+                var url = dom.parent().prev(); //根据实际情况更改,需要复制内容的载体
                 url.select();
                 document.execCommand("Copy");
                 //alert("已复制至剪切板");
