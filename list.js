@@ -30,6 +30,30 @@ exports.list = function(host) {
         box-shadow: 0 3px 3px rgba(0,0,0,.2);
         text-align:center;
     }
+    .kan{
+        display: inline-block;
+        padding: 2px 5px;
+        border: 1px solid #1b75fb;
+        text-decoration: none;
+        color: #333;
+        border-radius: 3px;
+        box-sizing:border-box;
+        height: 28px;
+        margin-right:5px;
+        background: #1b75fb;
+        color: #fff;
+    }
+    .copy_url_one{
+        display: inline-block;
+        padding: 2px 5px;
+        border: 1px solid #ccc;
+        text-decoration: none;
+        color: #333;
+        border-radius: 3px;
+        height: 28px;
+        box-sizing:border-box;
+        vertical-align: bottom;
+    }
     #container ul li img{width:288px;}
     </style>
   </head>
@@ -85,7 +109,7 @@ exports.list = function(host) {
                     for(var i=0;i<rows.length;i++){//每次加载时模拟随机加载图片
                         let val = rows[i];
                         let html = "";
-                        html = '<li><img src = "' + val.path + '"><p><input style="width:94%" type="text" value="${host}' + val.path + '" /><input style="width:20%" type="button" class="copy_url_one" value="复制"></p></li>';
+                        html = '<li><img src = "' + val.smallPath + '"><p><input style="width:94%" type="text" value="${host}' + val.path + '" /><div><a href="'+val.path+'" class="kan" target="_blank">查看原图</a><input style="width:20%" type="button" class="copy_url_one" value="复制" /></div></p></li>';
                         $minUl = getMinUl();
                         $minUl.append(html);
                     }

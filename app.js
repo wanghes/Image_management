@@ -41,6 +41,7 @@ app.use(koaBody({
 // 上传单个文件
 router.post('/uploadfile', async (ctx, next) => {
     const file = ctx.request.files.file; // 获取上传文件
+    const base64Data = ctx.request.body.base64;
 
     const arrInfo = file.name.split('.');
     const ext = arrInfo[1];
@@ -49,14 +50,27 @@ router.post('/uploadfile', async (ctx, next) => {
     // 创建可读流
     const reader = fs.createReadStream(file.path);
     let filePath = path.join(__dirname, 'public/upload/') + fileName;
+    let fileSmallPath = path.join(__dirname, 'public/supload/') + ('small_'+fileName);
 
     const resultFile = path.join('/public/upload/') + fileName;
-    const addRes = await post.newPost(resultFile);
+    const smallPath = path.join('/public/supload/') + ('small_'+fileName);
+    const addRes = await post.newPost(resultFile, smallPath);
     // 创建可写流
     const upStream = fs.createWriteStream(filePath);
     // 可读流通过管道写入可写流
     reader.pipe(upStream);
 
+    const dataBuffer = Buffer.from(base64Data, 'base64');
+
+    console.log(dataBuffer);
+    fs.writeFile(fileSmallPath, dataBuffer, function(err) {
+        console.log(err);
+        if (err) {
+            ctx.body = message(err);
+        }
+
+
+    });
     return ctx.body = message("上传成功！\n文件路径" + resultFile);
     // await sleep(2000);
     // return ctx.redirect('/list');

@@ -6,6 +6,9 @@ const Post = sequelize.define('images', {
     // 图片路径
     path: {
         type: Sequelize.STRING
+    },
+    smallPath: {
+        type: Sequelize.STRING
     }
 }, {
     freezeTableName: false
@@ -14,10 +17,11 @@ const Post = sequelize.define('images', {
 var post = Post.sync({ force: false });
 
 // 发表新文章
-exports.newPost = function(path) {
+exports.newPost = function(path, smallPath) {
     return post.then(function() {
         Post.create({
-            path: path
+            path: path,
+            smallPath:smallPath
         });
     });
 };
