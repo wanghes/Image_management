@@ -109,7 +109,7 @@ exports.list = function(host) {
                     for(var i=0;i<rows.length;i++){//每次加载时模拟随机加载图片
                         let val = rows[i];
                         let html = "";
-                        html = '<li><img src = "' + val.smallPath + '"><p><input style="width:94%" type="text" value="${host}' + val.path + '" /><div><a href="'+val.path+'" class="kan" target="_blank">查看原图</a><input style="width:20%" type="button" class="copy_url_one" value="复制" /></div></p></li>';
+                        html = '<li><img src = "' + val.smallPath + '"><div><input style="width:94%" type="text" value="${host}' + val.path + '" /><div><a href="'+val.path+'" class="kan" target="_blank">查看原图</a><input style="width:20%" type="button" class="copy_url_one" value="复制" /></div></div></li>';
                         $minUl = getMinUl();
                         $minUl.append(html);
                     }
