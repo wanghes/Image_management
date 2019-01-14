@@ -52,8 +52,12 @@ exports.layout = function(url) {
                 var ctx = cvs.getContext('2d');
                 ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
                 var newImageData = cvs.toDataURL(fileType, 0.8);   //重新生成图片，fileType为用户选择的图片类型
-
-                var sendData = newImageData.replace("data:" + fileType + ";base64,", '');
+                var sendData = "";
+                if (fileType == "image/gif") {
+                    sendData = newImageData.replace("data:image/png;base64,", '');
+                } else {
+                    sendData = newImageData.replace("data:" + fileType + ";base64,", '');
+                }
                 //当接收到上边的内容后，需要将data:image/png;base64,这段内容过滤掉
 
                 document.querySelector('#dataFile').value = sendData;

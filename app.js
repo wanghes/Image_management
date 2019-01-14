@@ -77,7 +77,6 @@ router.post('/uploadfiles', async (ctx, next) => {
     const files = ctx.request.files.file; // 获取上传文件
     for (let file of files) {
         // 创建可读流
-
         const reader = fs.createReadStream(file.path);
         // 获取上传文件扩展名
         let filePath = path.join(__dirname, 'public/upload/') + `/${file.name}`;
