@@ -62,14 +62,10 @@ router.post('/uploadfile', async (ctx, next) => {
 
     const dataBuffer = Buffer.from(base64Data, 'base64');
 
-    console.log(dataBuffer);
     fs.writeFile(fileSmallPath, dataBuffer, function(err) {
-        console.log(err);
         if (err) {
             ctx.body = message(err);
         }
-
-
     });
     return ctx.body = message("上传成功！\n文件路径" + resultFile);
     // await sleep(2000);

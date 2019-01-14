@@ -28,7 +28,11 @@ exports.newPost = function(path, smallPath) {
 
 // 查找所以文章
 exports.findAllPosts = function() {
-    return Post.findAll();
+    return Post.findAll({
+        'order': [
+            ['id', 'DESC']
+        ]
+    });
 };
 
 // 通过 ID 查找文章
@@ -39,6 +43,9 @@ exports.findById = function(id) {
 exports.findAllPostsByPages = function(offset, limit) {
     return Post.findAndCountAll({
         offset: offset,
-        limit: limit
+        limit: limit,
+        'order': [
+            ['id', 'DESC']
+        ]
     });
 };
