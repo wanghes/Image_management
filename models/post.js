@@ -40,6 +40,14 @@ exports.findById = function(id) {
     return Post.findByPk(id);
 };
 
+exports.deleteById = function(id) {
+    return Post.destroy({
+        'where': {
+            id: id
+        }
+    });
+}
+
 exports.findAllPostsByPages = function(offset, limit) {
     return Post.findAndCountAll({
         offset: offset,

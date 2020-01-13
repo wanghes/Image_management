@@ -34,6 +34,7 @@ app.use(koaBody({
         maxFileSize: 200 * 1024 * 1024 // 设置上传文件大小最大限制，默认2M
     }
 }));
+
 // app.use(ctx => {
 //   ctx.body = `Request Body: ${JSON.stringify(ctx.request.body)}`;
 // });
@@ -94,7 +95,11 @@ router.post('/uploadfiles', async (ctx, next) => {
 //     const result = await post.findById(1);
 //     ctx.body= result;
 // });
-
+router.delete('/list/:id', async (ctx, next) => {
+    let id = ctx.params.id;
+    const result = await post.deleteById(id);
+    ctx.body= result;
+});
 
 
 router.get('/', (ctx, next) => {
@@ -107,7 +112,7 @@ router.get('/list', (ctx, next) => {
 
 router.post('/images', async (ctx, next) => {
     const page = parseInt(ctx.request.body.page, 10)|| 1;
-    const limit = 10;
+    const limit = 12;
     const offset = limit * (page - 1);
     const result = await post.findAllPostsByPages(offset, limit);
     ctx.body= result;
