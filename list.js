@@ -8,10 +8,10 @@ exports.list = function(host) {
     <meta charSet='utf-8'/>
     <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
     <meta name='renderer' content='webkit'/>
-    <meta name='keywords' content='demo'/>
-    <meta name='description' content='demo'/>
-    <meta name='viewport' content='width=device-width, initial-scale=1'/>
-    <link href="/public/bootstrap/css/bootstrap.min.css" rel=stylesheet>    
+    <meta name='keywords' content=''/>
+    <meta name='description' content=''/>
+    <meta name='viewport' content="width=device-width, initial-scale=1"/>
+    <link href="/public/bootstrap/css/bootstrap.min.css" rel=stylesheet /> 
     <style type="text/css">
     *{
         margin:0;
@@ -137,7 +137,7 @@ exports.list = function(host) {
 
         function createPages(countAll, page) {
             var $pager = $('#pagerInfo');
-            var perPage = 12;
+            var perPage = 20;
             var html = "";
             var pages =  Math.ceil(countAll / perPage);
             if ((page-1) > 0) {

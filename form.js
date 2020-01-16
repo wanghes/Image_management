@@ -5,19 +5,95 @@ exports.layout = function(url) {
   <!DOCTYPE html>
   <html>
   <head>
-    <meta charSet='utf-8'/>
-    <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
-    <meta name='renderer' content='webkit'/>
-    <meta name='keywords' content='demo'/>
-    <meta name='description' content='demo'/>
-    <meta name='viewport' content='width=device-width, initial-scale=1'/>
+    <meta charSet="utf-8"/>
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="/public/bootstrap/css/bootstrap.min.css" rel=stylesheet /> 
+    <style type="text/css">
+    html.body{
+        width: 100%;
+        height: 100vh;
+    }
+    #root{
+        width: 100%;
+        height: 100vh;
+        text-align: center;
+    }
+    .btn_wrap{
+        width: 200px;
+        height:200px; 
+        position:relative;
+        margin: 50px auto 15px;
+        border: 1px solid rgb(45, 111, 212);
+        background-color: #fff;
+        border-radius: 5px;
+        transition: all .2s ease-out;
+        cursor: pointer;
+    }   
+    .btn_wrap .btn_a{
+        cursor: pointer;
+        position:absolute;
+        display: block;
+        width: 200px;
+        height: 200px;
+        top: 0;
+        left:0;
+        z-index: 1;
+        text-align: center;
+        background: url("/public/img/upload.png") no-repeat;
+        background-size: 80px 80px;
+        background-position: center 30px;  
+    } 
+    .btn_wrap .btn_a::after{
+        content:"请上传图片文件";
+        width:100%;
+        position:absolute;
+        top: 135px;
+        left: 0;
+        text-align:center;
+        font-size: 16px;
+        color: rgb(45, 111, 212);
+    }
+    .btn_wrap:hover{
+        border-radius: 5px;
+        background-color:rgb(45, 111, 212);
+    }
+    .btn_wrap:hover .btn_a{
+        background: url("/public/img/upload_hover.png") no-repeat;
+        background-size: 80px 80px;
+        background-position: center 30px;  
+    }
+    .btn_wrap:hover .btn_a::after{
+        color: #fff;
+    }
+    #file{
+        cursor: pointer;
+        width: 200px;
+        height:200px; 
+        position:absolute;
+        top: 0;
+        left:0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        z-index :2;
+    }
+    input[type="submit"].btn {
+        width: 200px;
+    }
+    </style>
   </head>
   <body>
     <div id="root">
         <form action="${url}" method="post" enctype="multipart/form-data">
-            <input type="hidden" value="" name="base64" id="dataFile" />
-            <input type="file" name="file" id="file" value="" onchange="changeImg()" multiple="multiple" />
-            <input type="submit" value="提交"/>
+            <input type="hidden" name="base64" id="dataFile" />
+            <div class="btn_wrap">
+                <a href="javascript:;" class="btn_a"></a>
+                <input type="file" name="file" id="file" onchange="changeImg()" />
+            </div>
+            <input type="submit" class="btn btn-large btn-primary" value="提交"/>
         </form>
         <div class="box" style="display:none;">
             <img src="" class="photo photo-img" />
@@ -59,11 +135,8 @@ exports.layout = function(url) {
                     sendData = newImageData.replace("data:" + fileType + ";base64,", '');
                 }
                 //当接收到上边的内容后，需要将data:image/png;base64,这段内容过滤掉
-
                 document.querySelector('#dataFile').value = sendData;
-
             };
-
 
             var img = document.querySelector('.photo-img');
             img.setAttribute('src', imgFile);

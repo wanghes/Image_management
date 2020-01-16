@@ -112,7 +112,7 @@ router.get('/list', (ctx, next) => {
 
 router.post('/images', async (ctx, next) => {
     const page = parseInt(ctx.request.body.page, 10)|| 1;
-    const limit = 12;
+    const limit = 20;
     const offset = limit * (page - 1);
     const result = await post.findAllPostsByPages(offset, limit);
     ctx.body= result;
