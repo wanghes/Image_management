@@ -5,12 +5,12 @@ exports.list = function(host) {
   <!DOCTYPE html>
   <html>
   <head>
-    <meta charSet='utf-8'/>
-    <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
-    <meta name='renderer' content='webkit'/>
-    <meta name='keywords' content=''/>
-    <meta name='description' content=''/>
-    <meta name='viewport' content="width=device-width, initial-scale=1"/>
+    <meta charSet="utf-8"/>
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="/public/bootstrap/css/bootstrap.min.css" rel=stylesheet /> 
     <style type="text/css">
     *{
@@ -87,7 +87,7 @@ exports.list = function(host) {
   <script type="text/javascript">
   $(function(){
         function copyUrl() {
-            $('body').on('click', '.copy_url_one', function () {
+            $('body').on('click', '.copy_btn', function () {
                 var dom = $(this);
                 var url = dom.parent().prev(); //根据实际情况更改,需要复制内容的载体
                 url.select();
@@ -177,6 +177,8 @@ exports.list = function(host) {
 
             $('body').on('click', 'a.del', function() {
                 var id = parseInt($(this).data('id'));
+                var parent = $(this).parents("li");
+             
                 var mes = confirm("你确定要删除该项吗？删除无法恢复");
                 if (mes == true){
                    $.ajax({
@@ -184,7 +186,9 @@ exports.list = function(host) {
                         type: "delete",
                         dataType:"json",
                         success:function(data) {
-                            console.log(data);
+                            if (data) {
+                                parent.remove();
+                            }
                         }
                     });
                 }

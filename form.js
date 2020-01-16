@@ -19,7 +19,7 @@ exports.layout = function(url) {
     }
     #root{
         width: 100%;
-        height: 100vh;
+
         text-align: center;
     }
     .btn_wrap{
@@ -83,6 +83,18 @@ exports.layout = function(url) {
     input[type="submit"].btn {
         width: 200px;
     }
+    .box{
+        display:none;
+        margin-top:15px;
+        border-radius: 5px;
+        border: 1px solid #eee;
+        padding: 10px;
+        width:422px;
+        margin: 15px auto 0;
+    }
+    .photo-img{
+        width:400px;
+    }
     </style>
   </head>
   <body>
@@ -95,7 +107,7 @@ exports.layout = function(url) {
             </div>
             <input type="submit" class="btn btn-large btn-primary" value="提交"/>
         </form>
-        <div class="box" style="display:none;">
+        <div class="box">
             <img src="" class="photo photo-img" />
         </div>
     </div>
@@ -140,8 +152,7 @@ exports.layout = function(url) {
 
             var img = document.querySelector('.photo-img');
             img.setAttribute('src', imgFile);
-            img.setAttribute('style', "width:400px;");
-            document.querySelector('.box').setAttribute('style','display:block; margin-top:15px;');
+            document.querySelector('.box').style.display = "block";
         }
         reader.readAsDataURL(file)
     }
