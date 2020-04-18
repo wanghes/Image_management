@@ -2,11 +2,13 @@ const Koa = require('koa');
 const koaBody = require('koa-body');
 const Router = require('koa-router');
 const fs = require("fs");
+const cors = require('koa2-cors');
 const path = require("path");
 const static = require('koa-static');
 const post = require('./models/post');
 const layout = require('./form.js').layout;
 const list = require('./list.js').list;
+
 const message = require('./message.js').message;
 
 
@@ -24,6 +26,7 @@ const sleep = async (duration) => {
     });
 };
 
+app.use(cors());
 app.use(static(
     path.join(__dirname,  staticPath)
 ));
