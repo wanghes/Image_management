@@ -4,7 +4,8 @@
   "description": "file_upload",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "server": "pm2 start app.js --name image"
   },
   "repository": {
     "type": "git",
