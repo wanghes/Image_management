@@ -6,19 +6,12 @@ const cors = require('koa2-cors');
 const path = require("path");
 const static = require('koa-static');
 const post = require('./models/post');
-const layout = require('./form.js').layout;
-const list = require('./list.js').list;
-
-const message = require('./message.js').message;
-
-
 const app = new Koa();
 
 const router = new Router();
 
 //设置静态资源的路径
 const staticPath = './';
-
 
 const sleep = async (duration) => {
     return new Promise((resolve, reject) => {
@@ -38,26 +31,21 @@ app.use(koaBody({
     }
 }));
 
-// app.use(ctx => {
-//   ctx.body = `Request Body: ${JSON.stringify(ctx.request.body)}`;
-// });
-
 // 上传单个文件
-router.post('/uploadfile', async (ctx, next) => {
+router.post('/api/uploadfile', async (ctx, next) => {
     const file = ctx.request.files.file; // 获取上传文件
     const base64Data = ctx.request.body.base64;
-
     const arrInfo = file.name.split('.');
     const ext = arrInfo[1];
     const name = Date.now();
     const fileName = name + '.' + ext;
     // 创建可读流
     const reader = fs.createReadStream(file.path);
-    let filePath = path.join(__dirname, 'public/upload/') + fileName;
-    let fileSmallPath = path.join(__dirname, 'public/supload/') + ('small_' + fileName);
+    let filePath = path.join(__dirname, 'www/resources/upload/') + fileName;
+    let fileSmallPath = path.join(__dirname, 'www/resources/supload/') + ('small_' + fileName);
 
-    const resultFile = path.join('/public/upload/') + fileName;
-    const smallPath = path.join('/public/supload/') + ('small_' + fileName);
+    const resultFile = path.join('/www/resources/upload/') + fileName;
+    const smallPath = path.join('/www/resources/supload/') + ('small_' + fileName);
     const addRes = await post.newPost(resultFile, smallPath);
     // 创建可写流
     const upStream = fs.createWriteStream(filePath);
@@ -68,14 +56,24 @@ router.post('/uploadfile', async (ctx, next) => {
 
     fs.writeFile(fileSmallPath, dataBuffer, function (err) {
         if (err) {
-            ctx.body = message(err);
+            ctx.body = {
+                code: 500,
+                msg: err,
+                data: null
+            };
+           
         }
     });
-    return ctx.body = message("上传成功！\n文件路径" + resultFile);
+    return ctx.body = {
+        code: 0,
+        msg: "上传成功！\n文件路径" + resultFile,
+        data: null
+    };
+   
 });
 
 // 上传多个文件
-router.post('/uploadfiles', async (ctx, next) => {
+router.post('/api/uploadfiles', async (ctx, next) => {
     const files = ctx.request.files.file; // 获取上传文件
     for (let file of files) {
         // 创建可读流
@@ -90,27 +88,22 @@ router.post('/uploadfiles', async (ctx, next) => {
     return ctx.body = "上传成功！";
 });
 
-router.delete('/list/:id', async (ctx, next) => {
+router.delete('/api/list/:id', async (ctx, next) => {
     let id = ctx.params.id;
     const result = await post.deleteById(id);
     ctx.body = result;
 });
 
-
-router.get('/', (ctx, next) => {
-    ctx.body = layout(ctx.request.origin + '/uploadfile');
-});
-
-router.get('/list', (ctx, next) => {
-    ctx.body = list(ctx.request.origin);
-});
-
-router.post('/images', async (ctx, next) => {
-    const page = parseInt(ctx.request.body.page, 10) || 1;
-    const limit = 20;
+router.post('/api/images', async (ctx, next) => {
+    const page = parseInt(ctx.request.body.pageNumber, 10) || 1;
+    const limit = parseInt(ctx.request.body.pageSize, 10) || 20;
     const offset = limit * (page - 1);
     const result = await post.findAllPostsByPages(offset, limit);
-    ctx.body = result;
+    ctx.body = {
+        code: 0,
+        msg: "获取成功",
+        data: result
+    };
 })
 
 
