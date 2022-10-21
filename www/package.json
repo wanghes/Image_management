@@ -1,0 +1,62 @@
+{
+  "name": "myproject",
+  "version": "1.0.0",
+  "description": "A Vue.js project",
+  "author": "haisong.wang <haisong.wang@9icaishi.net>",
+  "private": true,
+  "scripts": {
+    "dev": "vite --port 8081",
+    "tauri": "tauri",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@originjs/vite-plugin-require-context": "^1.0.9",
+    "axios": "^0.19.0",
+    "clipboard": "^2.0.8",
+    "element-ui": "git+http://192.168.1.127/front_source/element_reset.git",
+    "vue": "2.6.14",
+    "js-cookie": "^2.2.0",
+    "md5": "^2.3.0",
+    "nprogress": "^0.2.0",
+    "path-browserify": "^1.0.1",
+    "path-to-regexp": "^6.2.0",
+    "qs": "^6.10.1",
+    "moment": "^2.29.1",
+    "vue-router": "^3.5.3",
+    "vite-plugin-commonjs": "^0.2.6",
+    "vite-plugin-dynamic-import": "^0.7.0",
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.2.29",
+    "autoprefixer": "^7.1.2",
+    "qiniu-js": "^3.3.3",
+    "babel-helper-vue-jsx-merge-props": "^2.0.3",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-runtime": "^6.22.0",
+    "babel-plugin-transform-vue-jsx": "^3.5.0",
+    "node-sass": "^7.0.1",
+    "postcss-import": "^11.0.0",
+    "postcss-loader": "^2.0.8",
+    "postcss-url": "^7.2.1",
+    "sass": "^1.49.0",
+    "sass-loader": "^12.4.0",
+    "screenfull": "^4.2.0",
+    "vite": "^2.3.7",
+    "vite-plugin-svg-icons": "^1.0.0",
+    "vite-plugin-vue2": "^1.9.3",
+    "vite-plugin-vue2-jsx": "^1.0.3",
+    "vue-template-compiler": "2.6.14",
+    "webpack": "^5.0.0"
+  },
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
