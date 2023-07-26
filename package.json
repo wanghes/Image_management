@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app_api.js",
-    "server": "pm2 start app.js --name image"
+    "server": "pm2 start app_api.js --name image"
   },
   "repository": {
     "type": "git",

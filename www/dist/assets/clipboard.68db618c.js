@@ -1,4 +1,4 @@
-import{c as B,a as J,V as j}from"./index.404bbd5c.js";var M={exports:{}};/*!
+import{c as B,a as J,V as j}from"./index.57a2b2a8.js";var M={exports:{}};/*!
  * clipboard.js v2.0.10
  * https://clipboardjs.com/
  *
