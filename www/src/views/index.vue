@@ -3,36 +3,37 @@
         <div class="top_btns">
             <el-button type="primary" @click="showAddBox">添加图片</el-button>
         </div>
-        <el-row v-if="tableData.length">
-            <el-col :span="5" v-for="(item, index) in tableData" :key="item.id">
-                <el-card class="carder">
-                    <el-image :src="getAssetsFile(item.smallPath)" class="image">
-                        <div slot="placeholder">
-                            加载中<span class="dot">...</span>
-                        </div>
-                    </el-image>
-                    <div class="bottom">
-                        <time class="time">{{ item.createdAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}') }}</time>
-                        <div class="btns">
-                            <el-button size="mini" type="primary" @click="copy($event,getAssetsFile(item.path))"
-                                class="button">复制地址</el-button>
-                            <el-button size="mini" type="success" @click="openWindow(getAssetsFile(item.path))"
-                                class="button">查看原图</el-button>
-                        </div>
+        <div class="pager_box">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNumber"
+            :page-sizes="[20, 40, 60, 80, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+        </el-pagination>
+    </div>
+        <div v-if="tableData.length" class="img_container" id="grid">
+            <el-card v-for="(item, index) in tableData" :key="item.id" class="carder">
+                <el-image :src="getAssetsFile(item.smallPath)" class="image">
+                    <div slot="placeholder">加载中<span class="dot">...</span>
                     </div>
-                </el-card>
-            </el-col>
-        </el-row>
+                </el-image>
+                <div class="bottom">
+                    <time class="time">{{ item.createdAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}') }}</time>
+                    <div class="btns">
+                        <el-button size="mini" type="primary" @click="copy($event,getAssetsFile(item.path))"
+                            class="button">复制地址</el-button>
+                        <el-button size="mini" type="success" @click="openWindow(getAssetsFile(item.path))"
+                            class="button">查看原图</el-button>
+                    </div>
+                </div>
+            </el-card>
+        </div>
         <el-row v-else>
             <el-col :span="24" class="col_none_box">
                 <el-image class="none_img" :src="noneImg"></el-image>
                 <span class="none_text">暂时没有数据</span>
             </el-col>
         </el-row>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNumber"
-            :page-sizes="[20, 40, 60, 80, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
-        </el-pagination>
+
+        
 
         <el-dialog title="添加图片" :visible.sync="dialogFormVisible">
             <form method="post">
@@ -61,22 +62,41 @@ import {
 import { getAssetsFile } from "@/utils"
 import noneImg from "@/assets/none.png"
 import handleClipboard from "@/utils/clipboard"
+import Masonry from "masonry-layout";
 
 export default {
     name: "Home",
     data() {
         return {
             noneImg,
+            showBox: false,
             tableData: [],
-            pageSize: 20,
+            pageSize: 60,
             pageNumber: 1,
             total: 0,
             file: null,
-            dialogFormVisible: false
+            dialogFormVisible: false,
+            masonry: null
         };
     },
     mounted() {
         this.getList();
+    },
+    updated() {
+        let grid = document.querySelector('#grid');
+        setTimeout(() => {
+            this.masonry = new Masonry(grid, {
+            itemSelector: ".carder",
+                columnWidth: 240,
+                originTop: true, 
+                resize: true,
+                containerStyle: { position: 'relative' },  
+                fitWidth: true,   
+                horizontalOrder: true,
+                percentPosition: true,   
+                gutter: 20,                      
+            }); 
+        }, 200)
     },
     methods: {
         getAssetsFile,
@@ -205,7 +225,6 @@ a {
 }
 
 .carder {
-    width: 220px;
     box-sizing: border-box;
     padding: 10px;
     margin-bottom: 20px;
@@ -231,7 +250,7 @@ a {
 
 .image {
     width: 200px;
-    height: 200px;
+    height: auto;
 }
 
 .col_none_box{
@@ -331,5 +350,9 @@ input[type="submit"].btn {
 
 .photo-img {
     width: 400px;
+}
+.pager_box{
+    text-align: right;
+    padding: 0 0 30px;
 }
 </style>

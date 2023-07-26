@@ -8,7 +8,7 @@ export default defineConfig({
     server: {
         proxy: {
             "/api": {
-                target: "http://localhost:3003/api", // 目标代理接口地址
+                target: "http://localhost:3004/api", // 目标代理接口地址
                 changeOrigin: true, // 开启代理，在本地创建一个虚拟服务端
                 rewrite: (path) => path.replace(/^\/api/, '')
             }
