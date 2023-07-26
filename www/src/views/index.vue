@@ -178,6 +178,8 @@ export default {
             formData.append('file', this.file)
             formData.append('base64', base64)
             let res = await uploadfile(formData);
+
+            this.getList();
         },
         copy(event, text) {
             handleClipboard(text, event)
