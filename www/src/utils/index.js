@@ -1,4 +1,5 @@
-const IMGURL = location.host.indexOf('localhost') > -1 ? location.protocol + "//localhost:3003": location.protocol + "//img.mousecloud.cn"
+// const IMGURL = location.host.indexOf('localhost') > -1 ? location.protocol + "//localhost:3003": location.protocol + "//img.mousecloud.cn"
+const IMGURL = location.host.indexOf("localhost") > -1 ? location.protocol + "//localhost:3003" : location.protocol + "//localhost:3003";
 /**
  * Check if an element has a class
  * @param {HTMLElement} elm
@@ -6,7 +7,7 @@ const IMGURL = location.host.indexOf('localhost') > -1 ? location.protocol + "//
  * @returns {boolean}
  */
 export function hasClass(ele, cls) {
-    return !!ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'))
+    return !!ele.className.match(new RegExp("(\\s|^)" + cls + "(\\s|$)"));
 }
 
 /**
@@ -15,7 +16,7 @@ export function hasClass(ele, cls) {
  * @param {string} cls
  */
 export function addClass(ele, cls) {
-    if (!hasClass(ele, cls)) ele.className += ' ' + cls
+    if (!hasClass(ele, cls)) ele.className += " " + cls;
 }
 
 /**
@@ -25,11 +26,10 @@ export function addClass(ele, cls) {
  */
 export function removeClass(ele, cls) {
     if (hasClass(ele, cls)) {
-        const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
-        ele.className = ele.className.replace(reg, ' ')
+        const reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
+        ele.className = ele.className.replace(reg, " ");
     }
 }
-
 
 export function formatTime(time) {
     let currentTime = Math.floor(new Date().getTime() / 1000);
@@ -48,8 +48,8 @@ export function formatTime(time) {
     } else {
         let date = new Date(time * 1000);
         let year = date.getFullYear();
-        let month = String(date.getMonth() + 1).padStart(2, '0');
-        let day = String(date.getDate()).padStart(2, '0');
+        let month = String(date.getMonth() + 1).padStart(2, "0");
+        let day = String(date.getDate()).padStart(2, "0");
         return year + "-" + month + "-" + day;
     }
 }

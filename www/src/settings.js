@@ -1,5 +1,5 @@
 export default {
-    title: '图片管理系统',
+    title: "图片管理系统",
 
     /**
      * @type {boolean} true | false
@@ -17,7 +17,7 @@ export default {
      * @type {boolean} true | false
      * @description 是否固定显示右侧的顶部
      */
-    fixedHeader: false,
+    fixedHeader: true,
 
     /**
      * @type {boolean} true | false
@@ -31,5 +31,5 @@ export default {
      * The default is only used in the production env
      * If you want to also use it in dev, you can pass ['production', 'development']
      */
-    errorLog: 'development'
+    errorLog: "development",
 };

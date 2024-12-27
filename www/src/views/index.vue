@@ -2,26 +2,20 @@
     <div class="wrap">
         <div class="top_btns">
             <el-button type="primary" @click="showAddBox">添加图片</el-button>
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNumber" :page-sizes="[20, 40, 60, 80, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
         </div>
-        <div class="pager_box">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNumber"
-            :page-sizes="[20, 40, 60, 80, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
-        </el-pagination>
-    </div>
+        <el-divider></el-divider>
         <div v-if="tableData.length" class="img_container" id="grid">
             <el-card v-for="(item, index) in tableData" :key="item.id" class="carder">
                 <el-image :src="getAssetsFile(item.smallPath)" class="image">
-                    <div slot="placeholder">加载中<span class="dot">...</span>
-                    </div>
+                    <div slot="placeholder">加载中<span class="dot">...</span></div>
                 </el-image>
                 <div class="bottom">
-                    <time class="time">{{ item.createdAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}') }}</time>
+                    <time class="time">{{ item.createdAt | formatTime("{y}-{m}-{d} {h}:{i}:{s}") }}</time>
                     <div class="btns">
-                        <el-button size="mini" type="primary" @click="copy($event,getAssetsFile(item.path))"
-                            class="button">复制地址</el-button>
-                        <el-button size="mini" type="success" @click="openWindow(getAssetsFile(item.path))"
-                            class="button">查看原图</el-button>
+                        <el-button size="mini" type="primary" @click="copy($event, getAssetsFile(item.path))" class="button">复制</el-button>
+                        <el-button size="mini" type="success" @click="openWindow(getAssetsFile(item.path))" class="button">查看</el-button>
+                        <el-button size="mini" type="danger" @click="delFunc(item.id)" icon="el-icon-delete" class="button"></el-button>
                     </div>
                 </div>
             </el-card>
@@ -32,8 +26,6 @@
                 <span class="none_text">暂时没有数据</span>
             </el-col>
         </el-row>
-
-        
 
         <el-dialog title="添加图片" :visible.sync="dialogFormVisible">
             <form method="post">
@@ -55,13 +47,10 @@
 </template>
 
 <script>
-import {
-    fetchList,
-    uploadfile
-} from "@/api/img";
-import { getAssetsFile } from "@/utils"
-import noneImg from "@/assets/none.png"
-import handleClipboard from "@/utils/clipboard"
+import { fetchList, uploadfile, delFile } from "@/api/img";
+import { getAssetsFile } from "@/utils";
+import noneImg from "@/assets/none.png";
+import handleClipboard from "@/utils/clipboard";
 import Masonry from "masonry-layout";
 
 export default {
@@ -76,40 +65,39 @@ export default {
             total: 0,
             file: null,
             dialogFormVisible: false,
-            masonry: null
+            masonry: null,
         };
     },
     mounted() {
         this.getList();
     },
     updated() {
-        let grid = document.querySelector('#grid');
+        let grid = document.querySelector("#grid");
         setTimeout(() => {
             this.masonry = new Masonry(grid, {
-            itemSelector: ".carder",
+                itemSelector: ".carder",
                 columnWidth: 240,
-                originTop: true, 
+                originTop: true,
+                initLayout: true,
                 resize: true,
-                containerStyle: { position: 'relative' },  
-                fitWidth: true,   
+                containerStyle: { position: "relative" },
+                fitWidth: true,
+                transitionDuration: 0,
                 horizontalOrder: true,
-                percentPosition: true,   
-                gutter: 20,                      
-            }); 
-        }, 200)
+                percentPosition: true,
+                gutter: 10,
+            });
+        }, 500);
     },
     methods: {
         getAssetsFile,
         handleClipboard,
         async getList() {
-            let {
-                pageSize,
-                pageNumber
-            } = this;
+            let { pageSize, pageNumber } = this;
             let query = {
                 pageSize,
-                pageNumber
-            }
+                pageNumber,
+            };
             let res = await fetchList(query);
             if (res) {
                 this.total = res.count;
@@ -125,10 +113,10 @@ export default {
             this.getList();
         },
         showAddBox() {
-            this.dialogFormVisible = true
+            this.dialogFormVisible = true;
         },
         changeImg() {
-            var file = document.querySelector('#file').files[0];
+            var file = document.querySelector("#file").files[0];
             this.file = file;
             var fileType = file.type;
             var reader = new FileReader();
@@ -136,7 +124,8 @@ export default {
                 var imgFile = e.target.result;
                 var image = new Image();
                 image.src = imgFile;
-                image.onload = function () {  //创建一个image对象，给canvas绘制使用
+                image.onload = function () {
+                    //创建一个image对象，给canvas绘制使用
                     var cvs = document.createElement("canvas");
                     var scale = 1;
                     var tt = 200;
@@ -151,53 +140,77 @@ export default {
                         cvs.height = this.height;
                     }
 
-                    var ctx = cvs.getContext('2d');
+                    var ctx = cvs.getContext("2d");
                     ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
-                    var newImageData = cvs.toDataURL(fileType, 0.8);   //重新生成图片，fileType为用户选择的图片类型
+                    var newImageData = cvs.toDataURL(fileType, 0.8); //重新生成图片，fileType为用户选择的图片类型
                     var sendData = "";
+
                     if (fileType == "image/gif") {
-                        sendData = newImageData.replace("data:image/png;base64,", '');
+                        sendData = newImageData.replace("data:image/png;base64,", "");
                     } else {
-                        sendData = newImageData.replace("data:" + fileType + ";base64,", '');
+                        sendData = newImageData.replace("data:" + fileType + ";base64,", "");
                     }
+
                     //当接收到上边的内容后，需要将data:image/png;base64,这段内容过滤掉
-                    document.querySelector('#dataFile').value = sendData;
+                    document.querySelector("#dataFile").value = sendData;
                 };
 
-                var img = document.querySelector('.photo-img');
+                var img = document.querySelector(".photo-img");
 
-                img.setAttribute('src', imgFile);
-                document.querySelector('.box').style.display = "block";
-            }
-            reader.readAsDataURL(file)
+                img.setAttribute("src", imgFile);
+                document.querySelector(".box").style.display = "block";
+            };
+            reader.readAsDataURL(file);
         },
         async upFunc() {
             this.dialogFormVisible = false;
-            let base64 = document.querySelector('#dataFile').value;
+            let base64 = document.querySelector("#dataFile").value;
             let formData = new FormData();
-            formData.append('file', this.file)
-            formData.append('base64', base64)
-            let res = await uploadfile(formData);
+            formData.append("file", this.file);
+
+            formData.append("base64", base64);
+            await uploadfile(formData);
 
             this.getList();
         },
         copy(event, text) {
-            handleClipboard(text, event)
+            handleClipboard(text, event);
+        },
+
+        delFunc(id) {
+            this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning",
+            })
+                .then(async () => {
+                    if (id) {
+                        let res = await delFile(id);
+                        if (res == 1) {
+                            this.$message.success("删除成功");
+                            this.getList();
+                        } else {
+                            this.$message.error("删除失败");
+                        }
+                    } else {
+                        this.$message.error("删除ID获取失败");
+                    }
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "已取消删除",
+                    });
+                });
         },
         openWindow(url) {
-            window.open(url)
-        }
-    }
+            window.open(url);
+        },
+    },
 };
-
 </script>
 
 <style>
-.carder .el-card__body {
-    padding: 0;
-}
-</style>
-<style scoped>
 h1,
 h2 {
     font-weight: normal;
@@ -223,13 +236,16 @@ a {
 }
 
 .top_btns {
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-
+.el-divider--horizontal {
+    margin: 15px 0;
+}
 .carder {
     box-sizing: border-box;
-    padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .carder .bottom {
@@ -249,26 +265,29 @@ a {
     display: flex;
     justify-content: space-between;
 }
+.carder .el-card__body {
+    padding: 0;
+}
 
 .image {
     width: 200px;
     height: auto;
 }
 
-.col_none_box{
+.col_none_box {
     padding: 10px 0 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
-.none_text{
+.none_text {
     font-size: 16px;
     color: #252525;
 }
 
-.none_img{
-    width:400px;
+.none_img {
+    width: 400px;
 }
 
 .btn_wrap {
@@ -279,7 +298,7 @@ a {
     border: 1px solid rgb(45, 111, 212);
     background-color: #fff;
     border-radius: 5px;
-    transition: all .2s ease-out;
+    transition: all 0.2s ease-out;
     cursor: pointer;
 }
 
@@ -352,9 +371,5 @@ input[type="submit"].btn {
 
 .photo-img {
     width: 400px;
-}
-.pager_box{
-    text-align: right;
-    padding: 0 0 30px;
 }
 </style>
