@@ -1,59 +1,57 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../config/db').sequelize;
+const Sequelize = require("sequelize");
+const sequelize = require("../config/db").sequelize;
 const Op = Sequelize.Op;
 
-const Post = sequelize.define('images', {
-    // 图片路径
-    path: {
-        type: Sequelize.STRING
+const Post = sequelize.define(
+    "images",
+    {
+        // 图片路径
+        path: {
+            type: Sequelize.STRING,
+        },
+        smallPath: {
+            type: Sequelize.STRING,
+        },
     },
-    smallPath: {
-        type: Sequelize.STRING
+    {
+        freezeTableName: false,
     }
-}, {
-    freezeTableName: false
-});
+);
 
-var post = Post.sync({ force: false });
+Post.sync({ force: false });
 
 // 发表新文章
-exports.newPost = function(path, smallPath) {
-    return post.then(function() {
-        Post.create({
-            path: path,
-            smallPath:smallPath
-        });
+exports.newPost = function (path, smallPath) {
+    return Post.create({
+        path: path,
+        smallPath: smallPath,
     });
 };
 
 // 查找所以文章
-exports.findAllPosts = function() {
+exports.findAllPosts = function () {
     return Post.findAll({
-        'order': [
-            ['id', 'DESC']
-        ]
+        order: [["id", "DESC"]],
     });
 };
 
 // 通过 ID 查找文章
-exports.findById = function(id) {
+exports.findById = function (id) {
     return Post.findByPk(id);
 };
 
-exports.deleteById = function(id) {
+exports.deleteById = function (id) {
     return Post.destroy({
-        'where': {
-            id: id
-        }
+        where: {
+            id: id,
+        },
     });
-}
+};
 
-exports.findAllPostsByPages = function(offset, limit) {
+exports.findAllPostsByPages = function (offset, limit) {
     return Post.findAndCountAll({
         offset: offset,
         limit: limit,
-        'order': [
-            ['id', 'DESC']
-        ]
+        order: [["id", "DESC"]],
     });
 };
