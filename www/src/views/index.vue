@@ -164,12 +164,15 @@ export default {
         },
         async upFunc() {
             this.dialogFormVisible = false;
-            let base64 = document.querySelector("#dataFile").value;
+            let dataFile = document.querySelector("#dataFile");
+            let img = document.querySelector(".photo-img");
+            let base64 = dataFile.value;
             let formData = new FormData();
             formData.append("file", this.file);
-
             formData.append("base64", base64);
             await uploadfile(formData);
+            dataFile.value = "";
+            img.setAttribute("src", "");
 
             this.getList();
         },
