@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/wanghes/Image_management#readme",
   "dependencies": {
-    "koa": "^2.6.2",
+    "koa": "^2.15.4",
     "koa-body": "^4.0.6",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
